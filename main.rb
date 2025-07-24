@@ -13,6 +13,16 @@ class Node
     @right = nil
     @data = value
   end
+
+  def append_right(node)
+    return if node.data == @data
+
+    if @right.nil?
+      self.right = node
+    else
+      @right.append_right(node)
+    end
+  end
 end
 
 # Tree class for the binary tree
@@ -34,13 +44,22 @@ class Tree
     node = Node.new(node)
     node.left = build_tree(left)
     node.right = build_tree(right)
-    @root = node
+    node
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
+
+  def insert(number)
+    # pointer = @root
+    # while @root.left.data || @root.right.data
+    #   pointer = number > pointer.data ? pointer.right : pointer.left
+    # end
+    node = Node.new(number)
+    @root.right.append_right(node)
   end
 
   def i_love_pry
@@ -50,4 +69,6 @@ end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
+abc.insert(420)
 abc.pretty_print
+
