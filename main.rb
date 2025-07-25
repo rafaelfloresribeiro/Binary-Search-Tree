@@ -14,13 +14,21 @@ class Node
     @data = value
   end
 
-  def append_right(node)
+  def insert(node)
     return if node.data == @data
 
-    if @right.nil?
-      self.right = node
-    else
-      @right.append_right(node)
+    if node.data > @data
+      if @right.nil?
+        self.right = node
+      else
+        @right.insert(node)
+      end
+    elsif node.data < @data
+      if @left.nil?
+        self.left = node
+      else
+        @left.insert(node)
+      end
     end
   end
 end
@@ -59,7 +67,7 @@ class Tree
     #   pointer = number > pointer.data ? pointer.right : pointer.left
     # end
     node = Node.new(number)
-    @root.right.append_right(node)
+    @root.insert(node)
   end
 
   def i_love_pry
@@ -70,5 +78,5 @@ end
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
 abc.insert(420)
+abc.insert(20)
 abc.pretty_print
-
