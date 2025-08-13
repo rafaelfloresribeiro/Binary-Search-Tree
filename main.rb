@@ -33,13 +33,14 @@ class Node
   end
 
   def delete(node)
-    binding.pry
     compare = @data
     if compare == node
-      @data = nil
+      if childrens.zero?
+        @data = nil
+      end
     elsif node < compare
       @left.delete(node)
-    else
+    elsif node > compare
       @right.delete(node)
     end
   end
@@ -100,4 +101,5 @@ abc.insert(420)
 abc.insert(20)
 abc.pretty_print
 abc.delete(20)
+abc.insert(20)
 abc.pretty_print
