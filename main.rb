@@ -31,6 +31,25 @@ class Node
       end
     end
   end
+
+  def delete(node)
+    binding.pry
+    compare = @data
+    if compare == node
+      @data = nil
+    elsif node < compare
+      @left.delete(node)
+    else
+      @right.delete(node)
+    end
+  end
+
+  def childrens
+    how_many = 0
+    how_many += 1 if @left
+    how_many += 1 if @right
+    how_many
+  end
 end
 
 # Tree class for the binary tree
@@ -62,12 +81,12 @@ class Tree
   end
 
   def insert(number)
-    # pointer = @root
-    # while @root.left.data || @root.right.data
-    #   pointer = number > pointer.data ? pointer.right : pointer.left
-    # end
     node = Node.new(number)
     @root.insert(node)
+  end
+
+  def delete(number)
+    @root.delete(number)
   end
 
   def i_love_pry
@@ -79,4 +98,6 @@ exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
 abc.insert(420)
 abc.insert(20)
+abc.pretty_print
+abc.delete(20)
 abc.pretty_print
