@@ -34,10 +34,10 @@ class Node
 
   def delete(node)
     compare = @data
-    if compare == node
-      if childrens.zero?
-        @data = nil
-      end
+    if !left.nil? && node == @left.data
+      @left = nil if @left.childrens.zero?
+    elsif !right.nil? && node == @right.data
+      @right = nil if @right.childrens.zero?
     elsif node < compare
       @left.delete(node)
     elsif node > compare
@@ -101,5 +101,4 @@ abc.insert(420)
 abc.insert(20)
 abc.pretty_print
 abc.delete(20)
-abc.insert(20)
 abc.pretty_print
