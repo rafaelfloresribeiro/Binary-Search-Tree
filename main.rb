@@ -35,13 +35,29 @@ class Node
   def delete(node)
     compare = @data
     if !left.nil? && node == @left.data
-      @left = nil if @left.childrens.zero?
+      if @left.childrens.zero?
+        @left = nil
+      elsif @left.childrens == 1
+        @left = @left.snip
+      end
     elsif !right.nil? && node == @right.data
-      @right = nil if @right.childrens.zero?
+      if @right.childrens.zero?
+        @right = nil
+      elsif @right.childrens == 1
+        @right = @right.snip
+      end
     elsif node < compare
       @left.delete(node)
     elsif node > compare
       @right.delete(node)
+    end
+  end
+
+  def snip
+    if @right
+      something = @right
+    else
+      something = @left
     end
   end
 
@@ -100,5 +116,7 @@ abc = Tree.new(exercise_array)
 abc.insert(420)
 abc.insert(20)
 abc.pretty_print
-abc.delete(20)
+abc.delete(23)
+abc.pretty_print
+abc.insert(23)
 abc.pretty_print
