@@ -39,12 +39,16 @@ class Node
         @left = nil
       elsif @left.childrens == 1
         @left = @left.snip
+      elsif @right.childrens == 2
+        @left.data = @left.cut
       end
     elsif !right.nil? && node == @right.data
       if @right.childrens.zero?
         @right = nil
       elsif @right.childrens == 1
         @right = @right.snip
+      elsif @right.childrens == 2
+        @right.data = @right.cut
       end
     elsif node < compare
       @left.delete(node)
@@ -59,6 +63,12 @@ class Node
     else
       something = @left
     end
+  end
+
+  def cut
+    to_cut = @right if @right
+    to_cut = to_cut.left while to_cut.left
+    to_cut.data
   end
 
   def childrens
@@ -116,7 +126,5 @@ abc = Tree.new(exercise_array)
 abc.insert(420)
 abc.insert(20)
 abc.pretty_print
-abc.delete(23)
-abc.pretty_print
-abc.insert(23)
+abc.delete(67)
 abc.pretty_print
