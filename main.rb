@@ -34,13 +34,15 @@ class Node
 
   def delete(node)
     compare = @data
-    if !left.nil? && node == @left.data
+    if @data == node
+      @data = @right.cut
+    elsif !left.nil? && node == @left.data
       if @left.childrens.zero?
         @left = nil
       elsif @left.childrens == 1
         @left = @left.snip
-      elsif @right.childrens == 2
-        @left.data = @left.cut
+      elsif @left.childrens == 2
+        @left.data = @left.right.cut
       end
     elsif !right.nil? && node == @right.data
       if @right.childrens.zero?
@@ -48,7 +50,7 @@ class Node
       elsif @right.childrens == 1
         @right = @right.snip
       elsif @right.childrens == 2
-        @right.data = @right.cut
+        @right.data = @right.right.cut
       end
     elsif node < compare
       @left.delete(node)
@@ -66,9 +68,13 @@ class Node
   end
 
   def cut
-    to_cut = @right if @right
-    to_cut = to_cut.left while to_cut.left
-    to_cut.data
+    if @left.left
+      holding = @left.cut
+    else
+      holding = @left.data
+      @left = @left.right
+    end
+    holding
   end
 
   def childrens
