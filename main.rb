@@ -96,12 +96,16 @@ class Node
     compare
   end
 
-  def level_order
+  def level_order_traversal
+    queue = [self]
     level_order = []
-    level_order << @data
-    level_order << @left.data if @left
-    level_order << @right.data if @right
-    binding.pry
+    until queue.empty?
+      current_node = queue.shift
+      level_order << current_node.data
+      queue << current_node.left if current_node.left
+      queue << current_node.right if current_node.right
+    end
+    level_order
   end
 end
 
@@ -156,7 +160,7 @@ class Tree
   end
 
   def level_order
-    @root.level_order
+    @root.level_order_traversal
   end
 end
 
@@ -167,4 +171,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.level_order
+p abc.level_order
