@@ -83,6 +83,26 @@ class Node
     how_many += 1 if @right
     how_many
   end
+
+  def find(node)
+    compare = @data
+    if compare == node
+      compare == @data
+    elsif node > compare && !@right.nil?
+      compare = @right.find(node)
+    elsif node < compare && !@left.nil?
+      compare = @left.find(node)
+    end
+    compare
+  end
+
+  def level_order
+    level_order = []
+    level_order << @data
+    level_order << @left.data if @left
+    level_order << @right.data if @right
+    binding.pry
+  end
 end
 
 # Tree class for the binary tree
@@ -125,12 +145,26 @@ class Tree
   def i_love_pry
     binding.pry
   end
+
+  def find(number)
+    result = @root.find(number)
+    if result == number
+      print result
+    else
+      print 'Number not found'
+    end
+  end
+
+  def level_order
+    @root.level_order
+  end
 end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
-abc.insert(420)
-abc.insert(20)
+# abc.insert(420)
+# abc.insert(20)
+# abc.pretty_print
+# abc.delete(67)
 abc.pretty_print
-abc.delete(67)
-abc.pretty_print
+abc.level_order
