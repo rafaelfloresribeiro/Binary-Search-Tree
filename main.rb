@@ -96,16 +96,10 @@ class Node
     compare
   end
 
-  def level_order_traversal
-    queue = [self]
-    level_order = []
-    until queue.empty?
-      current_node = queue.shift
-      level_order << current_node.data
-      queue << current_node.left if current_node.left
-      queue << current_node.right if current_node.right
-    end
-    level_order
+  def pre_order
+    @data
+    @left.pre_order if !@left.nil?
+    @right.pre_order if !@right.nil?
   end
 end
 
@@ -160,7 +154,23 @@ class Tree
   end
 
   def level_order
-    @root.level_order_traversal
+    queue = [@root]
+    level_order = []
+    until queue.empty?
+      current_node = queue.shift
+      if block_given?
+        yield current_node
+      else
+        level_order << current_node.data
+      end
+      queue << current_node.left if current_node.left
+      queue << current_node.right if current_node.right
+    end
+    level_order unless block_given?
+  end
+
+  def pre_order
+    @root.pre_order
   end
 end
 
@@ -171,4 +181,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-p abc.level_order
+abc.pre_order
