@@ -105,6 +105,26 @@ class Node
     @left.pre_order(&block) if !@left.nil?
     @right.pre_order(&block) if !@right.nil?
   end
+
+  def in_order(&block)
+    @left.in_order(&block) if !@left.nil?
+    if block_given?
+      yield @data
+    else
+      @data
+    end
+    @right.in_order(&block) if !@right.nil?
+  end
+
+  def post_order(&block)
+    @right.post_order(&block) if !@right.nil?
+    if block_given?
+      yield @data
+    else
+      @data
+    end
+    @left.post_order(&block) if !@left.nil?
+  end
 end
 
 # Tree class for the binary tree
@@ -175,26 +195,27 @@ class Tree
     level_order unless block_given?
   end
 
-  def pre_order
-    queue = [@root]
-    pre_order = []
-    until queue.empty?
-      current_node = queue.shift
-      if block_given?
-        yield current_node
-      else
-        pre_order << current_node.data
-      end
-      queue << current_node.left if current_node.left
-    end
-    pre_order unless block_given?
-  end
-
-  def pre_order2(&block)
+  def pre_order(&block)
     if block_given?
       @root.pre_order(&block)
     else
       @root.pre_order
+    end
+  end
+
+  def in_order(&block)
+    if block_given?
+      @root.in_order(&block)
+    else
+      @root.in_order
+    end
+  end
+
+  def post_order(&block)
+    if block_given?
+      @root.post_order(&block)
+    else
+      @root.post_order
     end
   end
 end
@@ -206,4 +227,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.pre_order2 { |block| puts block }
+abc.post_order { |data| puts data }
