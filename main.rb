@@ -102,28 +102,28 @@ class Node
     else
       @data
     end
-    @left.pre_order(&block) if !@left.nil?
-    @right.pre_order(&block) if !@right.nil?
+    @left&.pre_order(&block)
+    @right&.pre_order(&block)
   end
 
   def in_order(&block)
-    @left.in_order(&block) if !@left.nil?
+    @left&.in_order(&block)
     if block_given?
       yield @data
     else
       @data
     end
-    @right.in_order(&block) if !@right.nil?
+    @right&.in_order(&block)
   end
 
   def post_order(&block)
-    @right.post_order(&block) if !@right.nil?
+    @right&.post_order(&block)
     if block_given?
       yield @data
     else
-      @data
+      p @data
     end
-    @left.post_order(&block) if !@left.nil?
+    @left&.post_order(&block)
   end
 
   def height
@@ -186,8 +186,6 @@ class Tree
     level_order = []
     until queue.empty?
       current_node = queue.shift
-      binding.pry
-
       if block_given?
         yield current_node
       else
