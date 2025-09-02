@@ -96,10 +96,14 @@ class Node
     compare
   end
 
-  def pre_order
-    @data
-    @left.pre_order if !@left.nil?
-    @right.pre_order if !@right.nil?
+  def pre_order(&block)
+    if block_given?
+      yield @data
+    else
+      @data
+    end
+    @left.pre_order(&block) if !@left.nil?
+    @right.pre_order(&block) if !@right.nil?
   end
 end
 
@@ -158,6 +162,8 @@ class Tree
     level_order = []
     until queue.empty?
       current_node = queue.shift
+      binding.pry
+
       if block_given?
         yield current_node
       else
@@ -170,7 +176,26 @@ class Tree
   end
 
   def pre_order
-    @root.pre_order
+    queue = [@root]
+    pre_order = []
+    until queue.empty?
+      current_node = queue.shift
+      if block_given?
+        yield current_node
+      else
+        pre_order << current_node.data
+      end
+      queue << current_node.left if current_node.left
+    end
+    pre_order unless block_given?
+  end
+
+  def pre_order2(&block)
+    if block_given?
+      @root.pre_order(&block)
+    else
+      @root.pre_order
+    end
   end
 end
 
@@ -181,4 +206,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.pre_order
+abc.pre_order2 { |block| puts block }
