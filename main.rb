@@ -125,6 +125,10 @@ class Node
     end
     @left.post_order(&block) if !@left.nil?
   end
+
+  def height
+    binding.pry
+  end
 end
 
 # Tree class for the binary tree
@@ -218,6 +222,15 @@ class Tree
       @root.post_order
     end
   end
+
+  def height(value)
+    pointer = @root
+    height = 0
+    return height if @data == value
+
+    pointer = value > pointer.data ? pointer.right : pointer.left while value != pointer.data
+    pointer.height
+  end
 end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -227,4 +240,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.post_order { |data| puts data }
+abc.height(3)
