@@ -126,8 +126,15 @@ class Node
     @left&.post_order(&block)
   end
 
-  def height
-    binding.pry
+  def height(current_height = 0)
+    if @left
+      current_height += 1
+      current_height = @left.height(current_height)
+    elsif @right
+      current_height += 1
+      current_height = @right.height(current_height)
+    end
+    current_height
   end
 end
 
@@ -227,7 +234,7 @@ class Tree
     return height if @data == value
 
     pointer = value > pointer.data ? pointer.right : pointer.left while value != pointer.data
-    pointer.height
+    p pointer.height
   end
 end
 
@@ -238,4 +245,4 @@ abc = Tree.new(exercise_array)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.height(3)
+abc.height(8)
