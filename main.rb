@@ -240,6 +240,24 @@ class Tree
   rescue NoMethodError
     nil
   end
+
+  def depth(value)
+    pointer = @root
+    depth = 0
+    return depth if @data == value
+
+    while value != pointer.data
+      depth += 1
+      if value > pointer.data
+        pointer = pointer.right
+      else
+        pointer = pointer.left
+      end
+    end
+    depth
+  rescue NoMethodError
+    p 'nil'
+  end
 end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -254,4 +272,4 @@ abc.insert(920)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-print abc.height(8)
+print abc.depth(122)
