@@ -127,12 +127,14 @@ class Node
   end
 
   def height(current_height = 0)
-    if @left
-      current_height += 1
-      current_height = @left.height(current_height)
+    if @right && @left
+      comparing_left = @left.height(1)
+      comparing_right = @right.height(1)
+      current_height += comparing_left > comparing_right ? comparing_left : comparing_right
+    elsif @left
+      current_height += @left.height(1)
     elsif @right
-      current_height += 1
-      current_height = @right.height(current_height)
+      current_height += @right.height(1)
     end
     current_height
   end
@@ -234,15 +236,22 @@ class Tree
     return height if @data == value
 
     pointer = value > pointer.data ? pointer.right : pointer.left while value != pointer.data
-    p pointer.height
+    pointer.height
+  rescue NoMethodError
+    nil
   end
 end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
-# abc.insert(420)
+abc.insert(420)
+abc.insert(120)
+abc.insert(320)
+abc.insert(520)
+abc.insert(720)
+abc.insert(920)
 # abc.insert(20)
 # abc.pretty_print
 # abc.delete(67)
 abc.pretty_print
-abc.height(8)
+print abc.height(8)
