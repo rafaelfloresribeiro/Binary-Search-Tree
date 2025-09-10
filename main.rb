@@ -121,7 +121,7 @@ class Node
     if block_given?
       yield @data
     else
-      p @data
+      @data
     end
     @left&.post_order(&block)
   end
@@ -137,6 +137,20 @@ class Node
       current_height += @right.height(1)
     end
     current_height
+  end
+
+  def balanced?
+    result = []
+    left = @left || Node.new(1)
+    right = @right || Node.new(1)
+    result << @right&.balanced?
+    result << node_balanced?(left, right)
+    result << @left&.balanced?
+    result.flatten.compact
+  end
+
+  def node_balanced?(left, right)
+    (left.height - right.height).abs
   end
 end
 
@@ -258,6 +272,18 @@ class Tree
   rescue NoMethodError
     p 'nil'
   end
+
+  def balanced?
+    array = @root.balanced?
+    balanced = array.any? { |node| node > 1 }
+    p balanced == true ? 'Unbalanced' : 'Balanced'
+  end
+
+  def re_balance
+    array = []
+    @root.in_order { |node| array << node }
+    @root = build_tree(array)
+  end
 end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
@@ -268,8 +294,7 @@ abc.insert(320)
 abc.insert(520)
 abc.insert(720)
 abc.insert(920)
-# abc.insert(20)
-# abc.pretty_print
-# abc.delete(67)
+abc.insert(20)
 abc.pretty_print
-print abc.depth(122)
+abc.re_balance
+abc.pretty_print
