@@ -96,34 +96,40 @@ class Node
     compare
   end
 
-  def pre_order(&block)
+  def pre_order(result = [], &block)
     if block_given?
       yield @data
     else
       @data
     end
-    @left&.pre_order(&block)
-    @right&.pre_order(&block)
+    result << @data
+    @left&.pre_order(result, &block)
+    @right&.pre_order(result, &block)
+    result
   end
 
-  def in_order(&block)
-    @left&.in_order(&block)
+  def in_order(result = [], &block)
+    @left&.in_order(result, &block)
     if block_given?
       yield @data
     else
       @data
     end
-    @right&.in_order(&block)
+    result << @data
+    @right&.in_order(result, &block)
+    result
   end
 
-  def post_order(&block)
-    @right&.post_order(&block)
+  def post_order(result = [], &block)
+    @right&.post_order(result, &block)
     if block_given?
       yield @data
     else
       @data
     end
-    @left&.post_order(&block)
+    result << @data
+    @left&.post_order(result, &block)
+    result
   end
 
   def height(current_height = 0)
@@ -288,13 +294,8 @@ end
 
 exercise_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 abc = Tree.new(exercise_array)
-abc.insert(420)
-abc.insert(120)
-abc.insert(320)
-abc.insert(520)
-abc.insert(720)
-abc.insert(920)
-abc.insert(20)
 abc.pretty_print
-abc.re_balance
-abc.pretty_print
+p abc.pre_order
+p abc.post_order
+p abc.in_order
+p abc.level_order
